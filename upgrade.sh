@@ -1,4 +1,5 @@
-# nix-init required
+#! /usr/bin/env nix-shell
+#! nix-shell -i bash -p nix-init
 
 NIX_FILE="default.nix"
 URL="https://github.com/Hyffer/fippf"

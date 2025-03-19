@@ -6,13 +6,13 @@
 
 buildGoModule rec {
   pname = "fippf";
-  version = "0.1.1";
+  version = "0.1.2";
 
   src = fetchFromGitHub {
     owner = "Hyffer";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-kab8NFFI3YEi2S6hwj0l1Ch6Sg6iRNnyAk6qieM6Scg=";
+    hash = "sha256-33FvdCg1+Yr6kJ85zOa42z/rZjIHsFmHCdzNfY0l/4I=";
   };
 
   vendorHash = "sha256-LYq69z8Ey+62BlZLW6JlEJC/WlYe9VyaG4R5vpu/Zg0=";
