@@ -2,6 +2,11 @@
 
 let
   cfg = config.services.fippf;
+
+  # https://discourse.nixos.org/t/list-installed-packages-without-version-numbers/25453
+  installedPackages = lib.unique (
+    builtins.map (p: "${p.pname or p.name}") config.environment.systemPackages
+  );
 in
 {
   options.services.fippf = {
@@ -18,7 +23,7 @@ in
     logLevel = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
-      description = "FIPPI service log level (debug/info/warn/error).";
+      description = "FIPPF service log level (debug/info/warn/error).";
     };
   };
 
@@ -33,6 +38,11 @@ in
           (lib.optionalString (cfg.logLevel != null) "--log_level ${cfg.logLevel}")
         ];
       };
+
+      # add nmcli and networkctl to PATH if they are installed
+      path = with pkgs;
+        lib.optionals (builtins.elem "networkmanager" installedPackages) [ networkmanager ]
+        ++ lib.optionals (builtins.elem "systemd" installedPackages) [ systemd ];
     };
   };
 
