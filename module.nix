@@ -34,6 +34,7 @@ in
       serviceConfig = {
         ExecStart = lib.concatStringsSep " " [
           (lib.getExe cfg.package)
+          "serve"
           "--config_dir ${cfg.configDir}"
           (lib.optionalString (cfg.logLevel != null) "--log_level ${cfg.logLevel}")
         ];
