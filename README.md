@@ -14,6 +14,8 @@ $ nix flake show
     └───fippf: Nixpkgs overlay
 ```
 
+And a docker image.
+
 ## Use with flake
 
 flake.nix
@@ -63,6 +65,40 @@ configuration.nix
 + # refer to module.nix for available options
 + services.fippf.enable = true;
 }
+```
+
+## Use inside container
+
+Build image with nix and load it into docker
+
+```sh
+nix build -f docker.nix
+docker load < result
+```
+
+You can explore the image using [dive](https://github.com/wagoodman/dive)
+
+```sh
+dive --source docker-archive <(gunzip -c result)
+```
+
+Here is an example docker-compose.yml
+
+```
+services:
+  fippf:
+    image: fippf:1.0.0
+    container_name: fippf
+    restart: unless-stopped
+    volumes:
+      - /path/to/fippf/config:/etc/fippf
+    environment:
+      - TZ=Asia/Shanghai
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
 ```
 
 ## Acknowledgement
