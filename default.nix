@@ -2,6 +2,7 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
+  installShellFiles,
 }:
 
 buildGoModule rec {
@@ -18,6 +19,14 @@ buildGoModule rec {
   vendorHash = "sha256-TvjmZfrR3X9gwuxIMG5+xV3p/6kQUZxqfgzUMkR2IHg=";
 
   ldflags = [ "-s" "-w" ];
+
+  nativeBuildInputs = [ installShellFiles ];
+  postInstall = ''
+    installShellCompletion --cmd fippf \
+      --bash <($out/bin/fippf completion bash) \
+      --fish <($out/bin/fippf completion fish) \
+      --zsh <($out/bin/fippf completion zsh)
+  '';
 
   meta = {
     description = "FIPPF: a Fake-IP Proxy Frontend";
